@@ -2,6 +2,7 @@ public class PieChart extends Chart {
 
   PieChart(Data data, int x, int y, int w, int h) {
     super(data, x, y, w, h);
+    this.name = "PieChart";
   }  
   
   public int getRadius() {

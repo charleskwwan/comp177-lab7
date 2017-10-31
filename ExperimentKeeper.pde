@@ -1,7 +1,7 @@
 public class ExperimentKeeper{
 
-  private static final String PARTICIPANT_ID     = "p1"; //ToDo: assign a unique id for each participant
-  private static final int NUMBER_OF_TRIALS      = 2;
+  private final String PARTICIPANT_ID     = "p." + getTime();
+  private static final int NUMBER_OF_TRIALS      = 6;
   private static final int NUMBER_OF_DATA_POINTS = 10;
   
   private static final int STATE_PROLOGUE = 0;
@@ -37,6 +37,11 @@ public class ExperimentKeeper{
     this.result = this.createResultTable();
     this.state = STATE_PROLOGUE;
   }
+  
+  // for unique id
+  private String getTime() {
+    return String.format("%d-%d-%d.%d-%d-%d", year(), month(), day(), hour(), minute(), second());
+  }
 
   public Data[] generateDatasetBy(int numberOfTrials, int numberOfDataPointPerTrial){
     Data[] dataset = new Data[numberOfTrials];
@@ -46,10 +51,10 @@ public class ExperimentKeeper{
 
   public Chart[] generateChartsFor(Data[] dataset, int chartX, int chartY, int chartWidth, int chartHeight){
     Chart[] charts = new Chart[dataset.length];
-
-    charts[0] = new BarChart(dataset[0], chartX, chartY, chartWidth, chartHeight);
-    charts[1] = new PieChart(dataset[1], chartX, chartY, chartWidth, chartHeight);
     
+    for (int i = 0; i < NUMBER_OF_TRIALS; i += 2) charts[i] = new BarChart(dataset[i], chartX, chartY, chartWidth, chartHeight);
+    for (int i = 1; i < NUMBER_OF_TRIALS; i += 2) charts[i] = new PieChart(dataset[i], chartX, chartY, chartWidth, chartHeight);
+
     return charts;
   }
 
@@ -73,6 +78,14 @@ public class ExperimentKeeper{
     table.addColumn("Error");
     return table;
   }
+  
+  private float getMarkedPercentage(Data data) {
+    ArrayList<Float> values = new ArrayList<Float>();
+    for (int i = 0; i < data.size(); i++) {
+      if (data.get(i).isMarked()) values.add(data.get(i).getValue());
+    }
+    return 100 * min(values.get(0), values.get(1)) / max(values.get(0), values.get(1));
+  }
 
   public void onMouseClickedAt(int x, int y){
     //println("X:" + x + ", Y:" + y);
@@ -93,10 +106,10 @@ public class ExperimentKeeper{
 
             Data data = this.chart.getData();
 
-            float truePercentage = 0.0;     //ToDo: decide how to compute the right answer
-            float reportedPercentage = 0.0; //ToDo: Note that "this.answer" contains what the participant inputed
-            float error = 0.0;              //ToDo: decide how to compute the log error from Cleveland and McGill (see the handout for details)
-
+            float truePercentage = getMarkedPercentage(data);
+            float reportedPercentage = Float.valueOf(this.answer);
+            float error = log(abs(reportedPercentage - truePercentage) + 1.0/8.0) / log(2);
+            
             TableRow row = this.result.addRow();
             row.setString("PartipantID", this.participantID);
             row.setInt("TrialIndex", this.currentTrialIndex);
