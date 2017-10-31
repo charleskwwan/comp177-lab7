@@ -6,6 +6,7 @@ public class Data{
   public Data(int size){
     this.size = size;
     this.dataPoints = new DataPoint[size];
+
     for (int i = 0; i < size; i++)
       this.dataPoints[i] = new DataPoint(random(20, 100), false);
     for (int i = 0; i < 2; i++) {
@@ -40,7 +41,7 @@ public class Data{
       this.value = value;
       this.isMarked = isMarked;
     }
-    
+
     public void setMarked(boolean marked) {
       this.isMarked = marked;
     }

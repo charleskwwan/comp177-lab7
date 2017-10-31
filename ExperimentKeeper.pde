@@ -3,7 +3,7 @@ public class ExperimentKeeper{
   private static final String PARTICIPANT_ID     = "p1"; //ToDo: assign a unique id for each participant
   private static final int NUMBER_OF_TRIALS      = 2;
   private static final int NUMBER_OF_DATA_POINTS = 10;
-
+  
   private static final int STATE_PROLOGUE = 0;
   private static final int STATE_TRIAL    = 1;
   private static final int STATE_EPILOGUE = 2;
@@ -47,9 +47,9 @@ public class ExperimentKeeper{
   public Chart[] generateChartsFor(Data[] dataset, int chartX, int chartY, int chartWidth, int chartHeight){
     Chart[] charts = new Chart[dataset.length];
 
-    for(int i = 0; i < dataset.length; i++) {
-      charts[i] = new PieChart(dataset[i], chartX, chartY, chartWidth, chartHeight);
-    }
+    charts[0] = new BarChart(dataset[0], chartX, chartY, chartWidth, chartHeight);
+    charts[1] = new PieChart(dataset[1], chartX, chartY, chartWidth, chartHeight);
+    
     return charts;
   }
 
