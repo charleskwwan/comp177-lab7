@@ -1,8 +1,8 @@
 public class ExperimentKeeper{
 
   private static final String PARTICIPANT_ID     = "p1"; //ToDo: assign a unique id for each participant
-  private static final int NUMBER_OF_TRIALS      = 2;    //ToDo: deside # trials per participant
-  private static final int NUMBER_OF_DATA_POINTS = 10;   //ToDo: deside # data points per trial
+  private static final int NUMBER_OF_TRIALS      = 2;
+  private static final int NUMBER_OF_DATA_POINTS = 10;
 
   private static final int STATE_PROLOGUE = 0;
   private static final int STATE_TRIAL    = 1;
@@ -47,8 +47,6 @@ public class ExperimentKeeper{
   public Chart[] generateChartsFor(Data[] dataset, int chartX, int chartY, int chartWidth, int chartHeight){
     Chart[] charts = new Chart[dataset.length];
 
-    //ToDo: decide how to generate your visualization for each data (See also Chart.pde and SampleChart.pde)
-    //      Note that each data holds all datapoints that will be projected in one chart
     for(int i = 0; i < dataset.length; i++) {
       charts[i] = new PieChart(dataset[i], chartX, chartY, chartWidth, chartHeight);
     }
